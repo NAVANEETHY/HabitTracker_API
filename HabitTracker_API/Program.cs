@@ -11,7 +11,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddDbContext<HabitDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection")));
 
-builder.Services.AddScoped<IAddTaskService, AddTaskService>();
+builder.Services.AddKeyedScoped<ICreateService, AddHabitService>("habit");
 
 var app = builder.Build();
 

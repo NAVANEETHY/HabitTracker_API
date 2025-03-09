@@ -8,16 +8,16 @@ namespace HabitTracker_API.Controllers
     [ApiController]
     public class HabitsController : ControllerBase
     {
-        private readonly IAddTaskService iAddTaskService;
-        public HabitsController(IAddTaskService iAddTaskService)
+        private readonly ICreateService iCreateService;
+        public HabitsController([FromKeyedServices("habit")] ICreateService iCreateService)
         {
-            this.iAddTaskService = iAddTaskService;
+            this.iCreateService = iCreateService;
         }
 
         [HttpPost("add")]
         public Task<IActionResult> AddHabit(dynamic json)
         {
-            return iAddTaskService.AddTask(json);
+            return iCreateService.Create(json);
         }
     }
 }

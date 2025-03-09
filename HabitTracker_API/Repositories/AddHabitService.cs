@@ -9,14 +9,14 @@ using System.Text.Json;
 
 namespace HabitTracker_API.Repositories
 {
-    public class AddTaskService : ControllerBase, IAddTaskService
+    public class AddHabitService : ControllerBase, ICreateService
     {
         private readonly HabitDBContext habitDBContext;
-        public AddTaskService(HabitDBContext habitDBContext)
+        public AddHabitService(HabitDBContext habitDBContext)
         {
             this.habitDBContext = habitDBContext;
         }
-        public async Task<IActionResult> AddTask(dynamic json)
+        public async Task<IActionResult> Create(dynamic json)
         {
             try
             {

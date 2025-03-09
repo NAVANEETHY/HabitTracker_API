@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HabitTracker_API.Interfaces
 {
-    public interface IAddTaskService
+    public interface ICreateService
     {
-        Task<IActionResult> AddTask(dynamic json);
+        Task<IActionResult> Create(dynamic json);
     }
 }

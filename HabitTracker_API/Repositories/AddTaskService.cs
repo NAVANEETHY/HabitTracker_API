@@ -20,11 +20,11 @@ namespace HabitTracker_API.Repositories
         {
             try
             {
-                string jsonStr = JsonSerializer.Serialize(json);
+                string jsonStr = JsonSerializer.Serialize<dynamic>(json);
                 string sqlScript = "exec spAddHabit @jsonStr, @status out, @statusMsg out";
                 var spJsonStr = new SqlParameter("@jsonStr", SqlDbType.NVarChar, 500) { Value = jsonStr };
-                var spStatus = new SqlParameter("@status", SqlDbType.TinyInt) { Direction = ParameterDirection.Output };
-                var spStatusMsg = new SqlParameter("@statusMsg", SqlDbType.VarChar, 200) { Direction = ParameterDirection.Output };
+                var spStatus = new SqlParameter("@status", SqlDbType.Int) { Direction = ParameterDirection.Output };
+                var spStatusMsg = new SqlParameter("@statusMsg", SqlDbType.NVarChar, 200) { Direction = ParameterDirection.Output };
                 await habitDBContext.Database.ExecuteSqlRawAsync(sqlScript, spJsonStr, spStatus, spStatusMsg);
                 
                 int status = (int)spStatus.Value;

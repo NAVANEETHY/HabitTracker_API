@@ -1,25 +1,33 @@
 use HabitDB
 go
 
-create or alter procedure spAddHabit @jsonStr nvarchar(500), @status int out, @statusMsg nvarchar(200) out
-------------------------- Insert a new habit into Tbl_Habits -------------------------
+create or alter procedure spInsertUser @jsonStr nvarchar(500)
+------------------------- Insert a new user into Tbl_UserInfo ------------------------
 -------------------------------- Author : Navaneeth Y --------------------------------
 as
 begin
 	begin try
-		insert into Tbl_Habits(UserId, Task, TOD, Days, Duration)
-		select * from openjson(@jsonStr)
+		declare @UserID int
+		while 1=1
+		begin
+			set @UserID = cast(floor(rand() * (9999 - 1000 + 1)) + 1000 as int)
+			if(select count(1) from Tbl_UserInfo where UserID = 0) = 0
+				break
+		end
+
+		set @jsonStr = JSON_MODIFY(@jsonStr, '$.userId', @UserID)
+		insert into Tbl_UserInfo(UserID, UserName, Email)
+		select userId, userName, email
+		from openjson(@jsonStr)
 		with(
-			UserId int,
-			Task varchar(200),
-			TOD int,
-			Days varchar(7),
-			Duration int
+			userId int,
+			userName varchar(100),
+			email varchar(100)
 		)
-		select @status = 1, @statusMsg = N'Success'
+		select N'{"status":"success"}'
 	end try
 	begin catch
-		select @status = 0, @statusMsg = N'DB Error - ' + ERROR_MESSAGE()
+		select N'{"error":"' + ERROR_MESSAGE() +'"}'
 	end catch
 end
 

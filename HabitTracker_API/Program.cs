@@ -8,10 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-
 builder.Services.AddDbContext<HabitDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection")));
-
-builder.Services.AddKeyedScoped<ICreateService, AddHabitService>("habit");
+builder.Services.AddMemoryCache();
+builder.Services.AddScoped<IOtpService, OtpService>();
+builder.Services.AddScoped<ISPService, SPService>();
 
 var app = builder.Build();
 

@@ -6,7 +6,6 @@ namespace HabitTracker_API.Interfaces
     {
         string GenerateOtp();
         Task SendOtpViaEmail(string toEmail, string otp);
-
         bool ValidateOtp(string email, string otp);
     }
 }

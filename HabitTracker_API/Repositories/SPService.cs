@@ -1,5 +1,5 @@
 ﻿using HabitTracker_API.Interfaces;
-using HabitTracker_API.Models;
+using HabitTracker_API.EFContexts;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -30,7 +30,7 @@ namespace HabitTracker_API.Repositories
                 {
                     throw new Exception(response[0]);
                 }
-                return Content(response[0]);
+                return Content(response[0], "application/json");
             }
             catch (Exception ex)
             {

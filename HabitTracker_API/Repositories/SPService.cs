@@ -30,7 +30,7 @@ namespace HabitTracker_API.Repositories
                 }
 
                 var jsonMap = JsonSerializer.Deserialize<Dictionary<string,object>>(response[0]);
-                if(jsonMap.ContainsKey("error"))
+                if(jsonMap.ContainsKey("Error"))
                 {
                     throw new Exception(response[0]);
                 }

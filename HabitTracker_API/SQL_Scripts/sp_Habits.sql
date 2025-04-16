@@ -1,16 +1,16 @@
 use HabitDB
 go
 
-create or alter procedure spInsertHabits @jsonStr nvarchar(max)
+create or alter procedure spInsertHabit @jsonStr nvarchar(max)
 as
 ----------------- Author : Navaneeth Y ------------------------
 --------------- Procedure to insert Habits --------------------
 begin
 	begin try
-		begin transaction
-			declare @UserID int = JSON_VALUE(@jsonStr, '$.UserID')
-			if(select count(1) from Tbl_Users where UserID = @UserID) = 1
-			begin
+		declare @UserID int = JSON_VALUE(@jsonStr, '$.UserID')
+		if(select count(1) from Tbl_Users where UserID = @UserID) = 1
+		begin
+			begin transaction
 				insert into Tbl_Habits(UserID, Task, TimeOfDay, Duration)
 				select UserID, Task, TimeOfDay, Duration 
 				from openjson(@jsonStr)
@@ -40,12 +40,16 @@ begin
 												  + 'set ' + @dayColumns
 												  + 'where UserID = @UserID and TaskID = @TaskID'
 				exec sp_executesql @sqlScript, N'@UserID int, @TaskID int', @UserID, @TaskID
-			end
-		commit transaction
-		select N'{"Status":"Success"}'
+			commit transaction
+			select 'Success' as Message for json path, without_array_wrapper
+		end
+		else
+		begin
+			select 'UserID doesn''t exist' as Error for json path, without_array_wrapper
+		end
 	end try
 	begin catch
 		rollback transaction
-		select ERROR_MESSAGE() as Error for json path
+		select ERROR_MESSAGE() as Error for json path, without_array_wrapper
 	end catch
 end

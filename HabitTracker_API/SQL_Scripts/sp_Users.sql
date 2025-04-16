@@ -24,10 +24,10 @@ begin
 			UserName varchar(100),
 			Email varchar(100)
 		)
-		select N'{"Status":"Success"}'
+		select 'Success' as Message for json path, without_array_wrapper
 	end try
 	begin catch
-		select ERROR_MESSAGE() as Error for json path
+		select ERROR_MESSAGE() as Error for json path, without_array_wrapper
 	end catch
 end
 

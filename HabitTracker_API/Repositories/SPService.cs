@@ -24,12 +24,17 @@ namespace HabitTracker_API.Repositories
                 sqlScript += " @jsonStr";
                 var spJsonStr = new SqlParameter("@jsonStr", SqlDbType.NVarChar, 1000) { Value = jsonStr };
                 var response = await habitDBContext.Database.SqlQueryRaw<string>(sqlScript, spJsonStr).ToListAsync();
-                var jsonMap = JsonSerializer.Deserialize<Dictionary<string,object>>(response[0]);
+                if(response.Count == 0)
+                {
+                    return Content("{}", "application/json");
+                }
 
+                var jsonMap = JsonSerializer.Deserialize<Dictionary<string,object>>(response[0]);
                 if(jsonMap.ContainsKey("error"))
                 {
                     throw new Exception(response[0]);
                 }
+
                 return Content(response[0], "application/json");
             }
             catch (Exception ex)

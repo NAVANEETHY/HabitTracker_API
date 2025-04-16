@@ -88,6 +88,10 @@ namespace HabitTracker_API.Controllers
                 string sqlScript = "spGetUserInfo @jsonStr";
                 var spJsonStr = new SqlParameter("@jsonStr", SqlDbType.NVarChar, 1000) { Value = jsonStr };
                 var response = await habitDBContext.Database.SqlQueryRaw<string>(sqlScript, spJsonStr).ToListAsync();
+                if (response.Count == 0)
+                {
+                    return Content("{}", "application/json");
+                }
 
                 jsonMap = JsonSerializer.Deserialize<Dictionary<string, object>>(response[0]);
                 int userId = int.Parse(jsonMap["UserID"].ToString(), CultureInfo.InvariantCulture);

@@ -53,3 +53,27 @@ begin
 		select ERROR_MESSAGE() as Error for json path, without_array_wrapper
 	end catch
 end
+
+go
+
+
+create or alter procedure spGetHabitsEveryDay @jsonStr nvarchar(max)
+as
+----------------- Author : Navaneeth Y ------------------------
+------- Procedure to fetch every day's habits --------
+begin
+	begin try
+		declare @UserID int = JSON_VALUE(@jsonStr, '$.UserID')
+		declare @Today nvarchar(10) = DATENAME(DW, GETDATE())
+		declare @sqlScript nvarchar(1000) = N'' +
+			'select t1.Task, t1.TimeOfDay, t1.Duration ' +
+			'from Tbl_Habits t1 join Tbl_Habits_Repeat t2 ' +
+			'on t1.UserID = t2.UserID and t1.TaskID = t2.TaskID ' +
+			'where t1.UserID = @UserID and ' + @Today + ' = 1 ' +
+			'for json path, without_array_wrapper'
+		exec sp_executesql @sqlScript, N'@UserID int', @UserID
+	end try
+	begin catch
+		select ERROR_MESSAGE() as Error for json path, without_array_wrapper
+	end catch
+end

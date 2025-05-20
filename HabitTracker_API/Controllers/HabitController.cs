@@ -23,8 +23,7 @@ namespace HabitTracker_API.Controllers
             this.habitDBContext = habitDBContext;
         }
 
-        [HttpPost]
-        [Route("insert")]
+        [HttpPost("insert")]
         public async Task<IActionResult> InsertHabit([FromBody] dynamic json)
         {
             string jsonStr = "";
@@ -40,6 +39,22 @@ namespace HabitTracker_API.Controllers
                 return BadRequest(ex.Message);
             }
             return await iSpService.ExecuteSP("spInsertHabit", jsonStr);
+        }
+
+        [HttpGet("today")]
+        public async Task<IActionResult> GetHabitsEveryDay()
+        {
+            string jsonStr = "";
+            try
+            {
+                int userId = int.Parse(User.FindFirstValue("userId"), CultureInfo.InvariantCulture);
+                jsonStr += "{\"UserID\":" + userId + "}";
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return await iSpService.ExecuteSP("spGetHabitsEveryDay", jsonStr);
         }
     }
 }

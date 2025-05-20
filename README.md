@@ -1,2 +1,2 @@
-# HabitTracker_API
-Backend API for HabitTracker mobile application.
+# HabitTracker_API (In progress)
+RESTful API for HabitTracker mobile application.

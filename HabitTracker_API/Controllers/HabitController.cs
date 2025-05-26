@@ -15,12 +15,10 @@ namespace HabitTracker_API.Controllers
     public class HabitController : ControllerBase
     {
         private readonly ISPService iSpService;
-        private readonly HabitDBContext habitDBContext;
 
-        public HabitController(ISPService iSpService, HabitDBContext habitDBContext)
+        public HabitController(ISPService iSpService)
         {
             this.iSpService = iSpService;
-            this.habitDBContext = habitDBContext;
         }
 
         [HttpPost("insert")]

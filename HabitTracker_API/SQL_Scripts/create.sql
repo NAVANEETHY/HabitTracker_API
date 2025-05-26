@@ -71,11 +71,7 @@ create Table Tbl_Habits_History(
 	UserID int not null,
 	TaskID int not null,
 	MissedDate date null,
-	SkippedDate date null,
-	constraint Pk_Tbl_Habits_History primary key clustered(
-		UserID,
-		TaskID
-	)
+	SkippedDate date null
 )
 
 go

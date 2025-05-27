@@ -66,9 +66,10 @@ begin
 		declare @UserID int = JSON_VALUE(@jsonStr, '$.UserID')
 		declare @Today nvarchar(10) = DATENAME(DW, GETDATE())
 		declare @sqlScript nvarchar(1000) = N'' +
-			'select t1.Task, t1.TimeOfDay, t1.Duration ' +
+			'select t1.Task, t1.TimeOfDay, t1.Duration, t3.IsCompleted, t3.IsSkipped ' +
 			'from Tbl_Habits t1 join Tbl_Habits_Repeat t2 ' +
-			'on t1.UserID = t2.UserID and t1.TaskID = t2.TaskID ' +
+			'on t1.UserID = t2.UserID and t1.TaskID = t2.TaskID join Tbl_Habits_Status t3 ' +
+			'on t1.UserID = t3.UserID and t1.TaskID = t3.TaskID ' +
 			'where t1.UserID = @UserID and ' + @Today + ' = 1 ' +
 			'for json path, without_array_wrapper'
 		exec sp_executesql @sqlScript, N'@UserID int', @UserID
